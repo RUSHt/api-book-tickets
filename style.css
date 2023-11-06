@@ -29,6 +29,7 @@ div.x:after { transform: rotate(-45deg); }
 .container #tickets { width: 300px; }
 .mobile-header { display: none; }
 .btn { background-color: #39a69b;color:white;padding: 5px 0px; width: 100%; text-align: center; max-width: 400px; position: relative; margin: 10px auto; }
+#cart-book-seats-state { position: relative; margin: 0px; padding: 10px; font-size: 14px; min-height: 50px; z-index: 100; width: 100%; text-align: center; display: flex; align-items: center; justify-content: space-around; font-weight: bold; }
 
 @media (max-width: 650px) {
 

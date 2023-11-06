@@ -30,7 +30,7 @@ div.x:after { transform: rotate(-45deg); }
 .mobile-header { display: none; }
 .btn { background-color: #39a69b;color:white;padding: 5px 0px; width: 100%; text-align: center; max-width: 400px; position: relative; margin: 10px auto; }
 #cart-book-seats-state { position: relative; margin: 0px; padding: 10px; font-size: 14px; min-height: 50px; z-index: 100; width: 100%; text-align: center; display: flex; align-items: center; justify-content: space-around; font-weight: bold; }
-
+.change-area-seats { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; max-width: 400px; margin: 0px auto; left: 10px; position: relative; }
 @media (max-width: 650px) {
 
   .mobile-header { display: grid; grid-template-columns: 40px 1fr 40px; border-bottom: 1px solid #c0c0c0; height: 40px; position: sticky; z-index: 10000; top:0px; left:0px; background-color: white; }
@@ -49,5 +49,5 @@ div.x:after { transform: rotate(-45deg); }
   #app book-event { margin: 0px; }
   .product { position: relative; }
   .product .product-sticker { text-decoration: none;color: white;position: absolute;right: 0px;top: -6px;background-color: red;padding: 5px;border-radius: 50%;width: 15px; }
-  .change-area-seats { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; margin: 5px; }
+  .change-area-seats { left: 0px; } 
 }

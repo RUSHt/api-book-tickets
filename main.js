@@ -86,16 +86,16 @@ const showEvent = (event, content) => {
     if ( state.mobile ) {
         document.querySelector('.mobile-header .title').innerHTML = `<div class="title-date-time"><p class="title">${event.title}</p><p class="title">${event.dateTime}</p></div>`
         app.innerHTML = `<div id="cart-book-seats-state" event="${event.id}"></div><div class="change-area-seats"><p class="btn change-area">change area</p><p class="btn change-seats">change seats</p></div><book-event id="event-${event.id}" event-id="${event.id}"></book-event>`
-        app.querySelector('.change-area').addEventListener('click',state.changeArea)
-        app.querySelector('.change-seats').addEventListener('click',state.changeSeats)
+
     } else {
-        app.innerHTML = `<p class="title">${event.title}</span><span>${event.dateTime}</span></p><p id="cart-book-seats-state"></p><book-event id="event-${event.id}" event-id="${event.id}"></book-event>`
+        app.innerHTML = `<p class="title">${event.title}</span><span>${event.dateTime}</span></p><p id="cart-book-seats-state"><div class="change-area-seats"><p class="btn change-area">change area</p><p class="btn change-seats">change seats</p></div></p><book-event id="event-${event.id}" event-id="${event.id}"></book-event>`
         addX(() => { 
             app.innerHTML = `<div class="contents"></div>`
             showEvents(content) 
         })
     }
-
+    app.querySelector('.change-area').addEventListener('click',state.changeArea)
+    app.querySelector('.change-seats').addEventListener('click',state.changeSeats)
 } 
 
 const addItems = ticket => {

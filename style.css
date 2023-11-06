@@ -1,0 +1,52 @@
+body { font-family: sans-serif; margin: 0px; padding: 0px; }
+#app { position: relative; }
+
+div.x { position: absolute; left: 22px; top: 7px; width: 40px; height: 40px; }
+div.x:before,div.x:after { content: ''; width: 40px; height: 2px; background-color: rgba(0,0,0,0.4); position: absolute; top: 18px; }
+div.x:before { transform: rotate(45deg); }
+div.x:after { transform: rotate(-45deg); }
+#app .contents { display: flex; flex-wrap: wrap; max-width: 1090px; position: relative; margin: 10px auto; border: 1px solid #c0c0c0; }
+#app.mobile .contents { display: grid; grid-template-columns: 1fr 1fr; border-width:0px; margin: 0px; } 
+#app.mobile .contents .content { border-width:0px; margin: 0px; } 
+#app.mobile .contents.mobile .content p { font-size: 16px; text-align: center; margin: 0px; }
+#app .contents .content { max-width: 250px; margin: 5px; padding: 5px; border: 1px solid #c0c0c0; }
+#app .contents .content img { width: 100%; }
+#app .contents .content p { font-size: 16px; text-align: center; }
+#app .events { display: grid; grid-template-columns: 300px 1fr; max-width: 1100px; position: relative; margin: 10px auto; border: 1px solid #c0c0c0; }
+#app.mobile .events { display: flex; flex-direction: column; }
+#app .title { text-align: center; }
+#app.mobile .title { margin: 10px; text-align: left; }
+#app .title span { width: 100%; display: block; font-size: 14px; }
+#app .events .one-sheet img { width: calc(100% - 10px); margin: 5px; }
+#app .events .days { margin-left: 10px; }
+#app .events .days .event { border:2px solid black;border-radius:10px;margin:10px 0px 10px 0px;width:120px;padding: 5px 0px;text-align:center }
+#app book-event { position: relative; margin: 10px auto; width: 500px; max-width: 100vw; }
+#app .products { border: 1px solid #c0c0c0; margin: 0px 20px; display: flex; flex-direction: column; align-items: center; justify-content: space-around; }
+#app .products .product { margin:25px;max-width: 300px;min-width: 300px; text-decoration:underline;color:blue;text-align:center; position: relative; }
+.product .product-sticker { text-decoration: none;color: white;position: absolute;right: 0px;top: -6px;background-color: red;padding: 5px;border-radius: 50%;width: 15px; }
+
+.container { display: grid;grid-template-columns: 1150px 300px 300px;  }
+.container #tickets { width: 300px; }
+.mobile-header { display: none; }
+.btn { background-color: #39a69b;color:white;padding: 5px 0px; width: 100%; text-align: center; max-width: 400px; position: relative; margin: 10px auto; }
+
+@media (max-width: 650px) {
+
+  .mobile-header { display: grid; grid-template-columns: 40px 1fr 40px; border-bottom: 1px solid #c0c0c0; height: 40px; position: sticky; z-index: 10000; top:0px; left:0px; background-color: white; }
+  .mobile-header .title { margin: 0px; display: flex; align-items: center; justify-content: space-around; height: 100%; }
+  .mobile-header .title-date-time { font-size: 14px; line-height: 1.4; }
+  .cart #cart { margin: 4px 0px;}
+  div.x { position: relative; top: 10px; left: 5px; background-color: transparent; }
+  div.x::before,div.x::after { top: 8px }
+  .container { display: block; }
+  #app.mobile #tickets { width: auto; margin: 5px; }
+  #app.mobile .title { margin: 10px; text-align: center; }
+  #cart { position: absolute; right: 4px; top: 0px }
+  #cart-book-seats-state { position: relative; margin: 0px; padding: 5px; font-size: 14px; min-height: 30px; z-index: 100; width: 100%; text-align: center; display: flex; align-items: center; justify-content: space-around; font-weight: bold; }
+  
+  #app.mobile > .btn { width: calc(100% - 10px); margin: 10px 5px 0px 5px; }
+  #app book-event { margin: 0px; }
+  .product { position: relative; }
+  .product .product-sticker { text-decoration: none;color: white;position: absolute;right: 0px;top: -6px;background-color: red;padding: 5px;border-radius: 50%;width: 15px; }
+  .change-area-seats { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; margin: 5px; }
+}

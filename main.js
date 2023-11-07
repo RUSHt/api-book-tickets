@@ -233,7 +233,7 @@ const showCartTickets = () => {
 document.addEventListener('DOMContentLoaded',() => {
 
     const app = document.querySelector('#app')
-    
+
     state.app = app;
     state.mobile = app.getBoundingClientRect().width < 650;
     
@@ -287,6 +287,7 @@ document.addEventListener('DOMContentLoaded',() => {
         });
 
         bookTickets.addEventListener('tickets',tickets => {
+            console.log('bookTickets ontickets',{ tickets });
             state.tickets = tickets;
             if ( state.cartSticker ) {
                 state.cartSticker.style.display = tickets.length > 0 ? 'block' : 'none';

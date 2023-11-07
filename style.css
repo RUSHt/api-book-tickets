@@ -33,12 +33,15 @@ div.x:after { transform: rotate(-45deg); top: 10px; }
 .change-area-seats { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; max-width: 400px; margin: 0px auto; left: 10px; position: relative; }
 @media (max-width: 650px) {
 
+  div.x { position: relative; top: 4px; left: 5px; background-color: transparent; }
+  div.x::before { top: 21px }
+  div.x::after { top: 10px }
+  
   .mobile-header { display: grid; grid-template-columns: 40px 1fr 40px; border-bottom: 1px solid #c0c0c0; height: 40px; position: sticky; z-index: 10000; top:0px; left:0px; background-color: white; }
   .mobile-header .title { margin: 0px; display: flex; align-items: center; justify-content: space-around; height: 100%; }
   .mobile-header .title-date-time { font-size: 14px; line-height: 1.4; }
   .cart #cart { margin: 4px 0px;}
-  div.x { position: relative; top: 10px; left: 5px; background-color: transparent; }
-  div.x::before,div.x::after { top: 8px }
+
   .container { display: block; }
   #app.mobile #tickets { width: auto; margin: 5px; }
   #app.mobile .title { margin: 10px; text-align: center; }

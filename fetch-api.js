@@ -14,7 +14,24 @@ export const getEvents = async (options = {}) => {
     return await response.json();
 }
 
+export const getSessionTickets = async ({ session: { _id, id }, accountId }) => {
+
+    const body = {
+        session: { _id, id },
+        accountId
+    }
+    
+    const result = await fetch(apiHost+'/get-session-tickets',{
+        method: 'POST',
+        body: JSON.stringify(body),
+    });
+
+    if ( !result.ok ) return { error: result }
+    return await result.json();
+}
+
 export const completeTicketsPurchase = async tickets => {
+    
     const body = {
         contact: {
             email: state.email,
@@ -42,19 +59,5 @@ export const completeTicketsPurchase = async tickets => {
     return await result.json();
 }
 
-export const getSessionTickets = async ({ session: { _id, id }, accountId }) => {
-    const apiHost = location.protocol == 'http:' ? 'http://localhost:9494' : "https://api.ticketus.net"
-    const body = {
-        session: { _id, id },
-        accountId
-    }
-    
-    const result = await fetch(apiHost+'/get-session-tickets',{
-        method: 'POST',
-        body: JSON.stringify(body),
-    });
 
-    if ( !result.ok ) return { error: result }
-    return await result.json();
-}
 

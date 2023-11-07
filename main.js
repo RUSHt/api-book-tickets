@@ -234,44 +234,15 @@ document.addEventListener('DOMContentLoaded',() => {
 
     const app = document.querySelector('#app')
 
-
-    getContent({ startDate }).then(({ content }) => {
-        console.log('getContent',{ content })
-        state.content = content;
-        showContent();
-    });
-    
-    getEvents({ startDate }).then(({ events }) => {
-        console.log('getEvents',{ events });
-        state.events = events;
-    });
-
     state.mobile = app.getBoundingClientRect().width < 650;
     
     if ( state.mobile ) {
         app.className = 'mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')
         state.cartSVG = document.querySelector('.mobile-header .cart')
-        document.querySelector('.container').removeChild(document.querySelector('#tickets'))
-    }
-    
-    window.onBookReady = async ( bookTickets ) => {
-        console.log('onBookReady');
-        state.changeArea = () => {
-            bookTickets.requestAreaChange(state.currentEvent.id)
-        }
-        state.changeSeats = () => {
-            bookTickets.requestSeatChange(state.currentEvent.id)
-        }
-
-        state.setSession = (session) => {
-            bookTickets.setSession(session)
-        }
-
         state.mobileX = document.querySelector('.mobile-header .x')
-        
-        console.log('state.mobileX',state.mobileX);
-        
+        document.querySelector('.container').removeChild(document.querySelector('#tickets'));
+
         state.mobileX?.addEventListener('click',() => {
             if ( app.querySelector('.products') ) return showCartTickets();
             if ( app.lastApp?.classList.contains('contents') ) { app.lastApp = document.createElement('div'); return showContent() }
@@ -286,6 +257,30 @@ document.addEventListener('DOMContentLoaded',() => {
             showCartTickets();
         });
 
+    }
+
+    getContent({ startDate }).then(({ content }) => {
+        state.content = content;
+        showContent();
+    });
+    
+    getEvents({ startDate }).then(({ events }) => {
+        state.events = events;
+    });
+    
+    window.onBookReady = async ( bookTickets ) => {
+        console.log('onBookReady');
+        state.changeArea = () => {
+            bookTickets.requestAreaChange(state.currentEvent.id)
+        }
+        state.changeSeats = () => {
+            bookTickets.requestSeatChange(state.currentEvent.id)
+        }
+
+        state.setSession = (session) => {
+            bookTickets.setSession(session)
+        }
+        
         bookTickets.addEventListener('handle-seat-area-change',({ eventId, area, areas }) => {
             console.log('handle-seat-area-change',{ eventId, area, areas })
         });

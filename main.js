@@ -248,6 +248,8 @@ document.addEventListener('DOMContentLoaded',() => {
 
     state.mobile = app.getBoundingClientRect().width < 650;
 
+    console.log({ mobile: state.mobile, getBoundingClientRect: app.getBoundingClientRect() })
+    
     if ( state.mobile ) {
         app.className = 'mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')

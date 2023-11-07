@@ -6,7 +6,7 @@ const startDate = '2023/06/01'
 
 const displayTickets = tickets => {
     
-    document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items" style="background-color:#32a89b;color:white;margin:5px;line-height:2;font-size:20px;text-align:center;font-family:sans-serif">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));
+    document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0;background-color:white"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items btn">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));
             
     document.querySelectorAll('.add-items').forEach((btn,i) => {
         btn.addEventListener('click',() => location.href = 'http://'+location.host+`/add-items.html?account=${accountId}&ticket=${tickets[i].ticketId}`)
@@ -314,13 +314,9 @@ document.addEventListener('DOMContentLoaded',() => {
             
             const { seats, requiredQty, currentQty, eventId } = update;
             
-            const bookEvent = document.querySelector(`#event-${eventId}`)
-            
             const cartMessage = document.querySelector('#cart-book-seats-state')
-            
-            console.log({ currentQty, requiredQty, eventId })
 
-            if ( !cartMessage || !bookEvent ) return console.log('return',{ cartMessage, bookEvent })
+            if ( !cartMessage ) return;
 
             if ( currentQty == requiredQty ) { 
                 cartMessage.innerHTML = '<p class="btn" id="buy-now">BUY NOW</p>' 
@@ -329,8 +325,7 @@ document.addEventListener('DOMContentLoaded',() => {
                 })
             }
             
-            if ( currentQty == 0 ) return cartMessage.innerHTML = `Select your seats`
-            cartMessage.innerHTML = 'Add '+(requiredQty - currentQty)+' more, '+seats.join(' ');
+            cartMessage.innerHTML = currentQty == 0 ? 'Select your seats' : ('Add '+(requiredQty - currentQty)+' more, '+seats.join(' '));
 
         })
 

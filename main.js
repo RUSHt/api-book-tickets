@@ -315,7 +315,8 @@ document.addEventListener('DOMContentLoaded',() => {
             const { seats, requiredQty, currentQty, eventId } = update;
             const bookEvent = document.querySelector(`#event-${eventId}`)
             const cartMessage = document.querySelector('#cart-book-seats-state')
-            if ( !cartMessage || !bookEvent ) return;
+
+            if ( !cartMessage || !bookEvent ) return console.log('return',{ cartMessage, bookEvent })
 
             if ( currentQty == requiredQty ) { 
                 cartMessage.innerHTML = '<p class="btn" id="buy-now">BUY NOW</p>' 
@@ -323,7 +324,7 @@ document.addEventListener('DOMContentLoaded',() => {
                     state.mobile ? showCartTickets() : showContent(); // if not mobile then cart is on screen.
                 })
             }
-
+            console.log({ currentQty })
             if ( currentQty == 0 ) return cartMessage.innerHTML = `Select your seats`
             cartMessage.innerHTML = 'Add '+(requiredQty - currentQty)+' more, '+seats.join(' ');
 

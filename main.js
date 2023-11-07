@@ -27,7 +27,7 @@ const state = {
 setTimeout(async () => {
     const Session = { _id: "6536ddf45f8984d522a6a36d", id: "cn8cwmnvlkrk4vkfmhwclljq" }
     //state.setSession(Session);
-    //state.setSession({}); // clear session
+    state.setSession({}); // clear session
     const { update, success, tickets } = await getSessionTickets({ session: Session, accountId })
     console.log('getSessionTickets',{ tickets, update, success })
 },5000)

@@ -215,7 +215,7 @@ const makeTicketsHTML = tickets => {
 
 const removeTicket = ticket => state.removeTicket(ticket.event.id)
 
-const changeSeats = ticket =>  showEvent(state.events.find(event => event.id == ticket.event.id),state.content.find(content => content._id == ticket.content._id))
+const changeSeats = ticket => showEvent(state.events.find(event => event.id == ticket.event.id),state.content.find(content => content._id == ticket.content._id))
 
 const showCartTickets = () => {
     
@@ -233,7 +233,8 @@ const showCartTickets = () => {
 document.addEventListener('DOMContentLoaded',() => {
 
     const app = document.querySelector('#app')
-
+    
+    state.app = app;
     state.mobile = app.getBoundingClientRect().width < 650;
     
     if ( state.mobile ) {
@@ -269,7 +270,7 @@ document.addEventListener('DOMContentLoaded',() => {
     });
     
     window.onBookReady = async ( bookTickets ) => {
-        console.log('onBookReady');
+
         state.changeArea = () => {
             bookTickets.requestAreaChange(state.currentEvent.id)
         }

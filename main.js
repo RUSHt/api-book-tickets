@@ -25,10 +25,11 @@ const state = {
 }
 
 setTimeout(async () => {
-    //state.setSession({ id: 'eh4xrt8iszpowjdzlxzhf0vf', _id: '6548bea6bab05635adbf9492' });
+    const Session = { _id: "6536ddf45f8984d522a6a36d", id: "cn8cwmnvlkrk4vkfmhwclljq" }
+    //state.setSession(Session);
     //state.setSession({}); // clear session
-    const { update, success, tickets } = await getSessionTickets({ session: { _id: '6548bea6bab05635adbf9492', id: 'eh4xrt8iszpowjdzlxzhf0vf' }, accountId })
-    console.log('setSession',{ tickets, update, success })
+    const { update, success, tickets } = await getSessionTickets({ session: Session, accountId })
+    console.log('getSessionTickets',{ tickets, update, success })
 },5000)
 
 try {

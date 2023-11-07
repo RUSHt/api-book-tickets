@@ -9,7 +9,7 @@ div.x:after { transform: rotate(-45deg); }
 #app.mobile .contents { display: grid; grid-template-columns: 1fr 1fr; border-width:0px; margin: 0px; } 
 #app.mobile .contents .content { border-width:0px; margin: 0px; } 
 #app.mobile .contents.mobile .content p { font-size: 16px; text-align: center; margin: 0px; }
-#app .contents .content { max-width: 250px; margin: 5px; padding: 5px; border: 1px solid #c0c0c0; }
+#app .contents .content { max-width: 196px; margin: 5px; padding: 5px; border: 1px solid #c0c0c0; }
 #app .contents .content img { width: 100%; }
 #app .contents .content p { font-size: 16px; text-align: center; }
 #app .events { display: grid; grid-template-columns: 300px 1fr; max-width: 1100px; position: relative; margin: 10px auto; border: 1px solid #c0c0c0; }

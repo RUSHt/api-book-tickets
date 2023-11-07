@@ -1,7 +1,8 @@
-import { getContent, getEvents } from "./fetch-api.js"
+import { getContent, getEvents, getSessionTickets, completeTicketsPurchase } from "./fetch-api.js"
 
 const products  = [ { _id: 'a', title: "Curly Fries", price: 3.75 }, { _id: 'b', title: "Meat Platter", price: 9.75 }, { _id: 'c', title: "Salted Popcorn", price: 3.95 }, { _id: 'd', title: "Chocolate Buttons", price: 3.5 } ]
 const accountId = '02sxk0vxanh'
+const startDate = '2023/06/01'
 
 const displayTickets = tickets => {
     
@@ -15,14 +16,6 @@ const displayTickets = tickets => {
 
 }
 
-getContent({ startDate: '2023/06/01' }).then(content => {
-    console.log({ content })
-});
-
-getEvents({ startDate: '2023/06/01' }).then(events => {
-    console.log({ events });
-});
-
 const state = {
     content: [],
     events: [],
@@ -35,7 +28,7 @@ setTimeout(async () => {
     //state.setSession({ id: 'eh4xrt8iszpowjdzlxzhf0vf', _id: '6548bea6bab05635adbf9492' });
     //state.setSession({}); // clear session
     const { update, success, tickets } = await getSessionTickets({ session: { _id: '6548bea6bab05635adbf9492', id: 'eh4xrt8iszpowjdzlxzhf0vf' }, accountId })
-    console.log('setSession',{ tickets })
+    console.log('setSession',{ tickets, update, success })
 },5000)
 
 try {
@@ -61,9 +54,11 @@ const showContent = () => {
 }
 
 const showEvents = content => {
+    
     state.currentEvent = false;
     state.currentContent = content;
     state.mobileX && ( state.mobileX.style.opacity = 1 );
+
     const oneSheet = `<div class="one-sheet"><img src="${state.mobile ? content.bannerImage : content.oneSheet}" /></div>`
     const days = state.events.filter(event => event.content_id == content._id).reduce((p,event) => {
         if ( !p[event.date] ) { p.push(p[event.date] = { day: event.day, events: [] }) }
@@ -108,6 +103,7 @@ const showEvent = (event, content) => {
 const addItems = ticket => {
     
     products.forEach(item => item.qty = 0);
+
     state.ticket = ticket;
 
     const updateItems = () => {
@@ -219,54 +215,7 @@ const makeTicketsHTML = tickets => {
 
 const removeTicket = ticket => state.removeTicket(ticket.event.id)
 
-const changeSeats = ticket => {
-    showEvent(state.events.find(event => event.id == ticket.event.id),state.content.find(content => content._id == ticket.content._id))
-}
-
-const completeTicketsPurchase = async tickets => {
-    const apiHost = location.protocol == 'http:' ? 'http://localhost:9494' : "https://api.ticketus.net"
-    const body = {
-        contact: {
-            email: state.email,
-            name: state.name,
-        },
-        paymentId: '<payment-reference>',
-        accountId,
-        tickets: tickets.map(ticket => ({
-            sessionId: ticket.sessionId,
-            event: ticket.event,
-            content: ticket.content,
-            seats: ticket.seats.map(seat => ({ id: seat.id, areaTitle: seat.areaTitle, qty: seat.qty, title: seat.title, price: seat.price, linePrice: seat.linePrice })),
-            items: ticket.items.map(item => ({ _id: item._id, title: item.title, qty: item.qty, price: item.price, linePrice: item.linePrice })),
-            itemRevenue: ticket.itemRevenue,
-            seatRevenue: ticket.seatRevenue,
-            price: ticket.price
-        })) 
-    }
-
-    const result = await fetch(apiHost+'/create-ticket',{
-        method: 'POST',
-        body: JSON.stringify(body)
-    });
-    if ( !result.ok ) return { error: result }
-    return await result.json();
-}
-
-const getSessionTickets = async ({ session: { _id, id }, accountId }) => {
-    const apiHost = location.protocol == 'http:' ? 'http://localhost:9494' : "https://api.ticketus.net"
-    const body = {
-        session: { _id, id },
-        accountId
-    }
-    
-    const result = await fetch(apiHost+'/get-session-tickets',{
-        method: 'POST',
-        body: JSON.stringify(body),
-    });
-
-    if ( !result.ok ) return { error: result }
-    return await result.json();
-}
+const changeSeats = ticket =>  showEvent(state.events.find(event => event.id == ticket.event.id),state.content.find(content => content._id == ticket.content._id))
 
 const showCartTickets = () => {
     
@@ -276,6 +225,7 @@ const showCartTickets = () => {
         app.innerHTML = `<div><p style="text-align:center;margin:10px">Your basket is empty</p><p class="btn" style="margin:10px;width:calc(100% - 20px)">show me What's on</p></div>`
         return app.querySelector('.btn').addEventListener('click',showContent)
     }
+
     app.innerHTML = `<div id="tickets"></div>`
     makeTicketsHTML(state.tickets)
 }
@@ -284,7 +234,20 @@ document.addEventListener('DOMContentLoaded',() => {
 
     const app = document.querySelector('#app')
 
-    state.mobile = app.getBoundingClientRect().width < 500
+
+    getContent({ startDate }).then(({ content }) => {
+        console.log('getContent',{ content })
+        state.content = content;
+        showContent();
+    });
+    
+    getEvents({ startDate }).then(({ events }) => {
+        console.log('getEvents',{ events });
+        state.events = events;
+    });
+
+    state.mobile = app.getBoundingClientRect().width < 650;
+
     if ( state.mobile ) {
         app.className = 'mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')
@@ -293,7 +256,7 @@ document.addEventListener('DOMContentLoaded',() => {
     }
     
     window.onBookReady = async ( bookTickets ) => {
-
+        console.log('onBookReady');
         state.changeArea = () => {
             bookTickets.requestAreaChange(state.currentEvent.id)
         }
@@ -325,7 +288,6 @@ document.addEventListener('DOMContentLoaded',() => {
         });
 
         bookTickets.addEventListener('tickets',tickets => {
-            console.log({ tickets })
             state.tickets = tickets;
             if ( state.cartSticker ) {
                 state.cartSticker.style.display = tickets.length > 0 ? 'block' : 'none';
@@ -365,17 +327,12 @@ document.addEventListener('DOMContentLoaded',() => {
             }
 
             if ( currentQty == 0 ) return cartMessage.innerHTML = `Select your seats`
-            cartMessage.innerHTML = 'Add '+(update.requiredQty - update.currentQty)+' more, '+update.seats.join(' ');
+            cartMessage.innerHTML = 'Add '+(requiredQty - currentQty)+' more, '+seats.join(' ');
 
         })
 
         state.removeTicket = bookTickets.removeTicket;
-
-        const content = await bookTickets.getContent({ startDate: "2023/09/14" });
-        state.content = content;
-        showContent();
-        state.events = await bookTickets.getEvents({ startDate: "2023/09/14" })
-
+        
         setTimeout(() => {
             bookTickets.ticketAction(); // reset release timer;
         },1500);

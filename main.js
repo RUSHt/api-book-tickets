@@ -247,8 +247,6 @@ document.addEventListener('DOMContentLoaded',() => {
     });
 
     state.mobile = app.getBoundingClientRect().width < 650;
-
-    console.log({ mobile: state.mobile, getBoundingClientRect: app.getBoundingClientRect() })
     
     if ( state.mobile ) {
         app.className = 'mobile';
@@ -270,7 +268,10 @@ document.addEventListener('DOMContentLoaded',() => {
             bookTickets.setSession(session)
         }
 
-        state.mobileX = document.querySelector('.mobile-header .x') 
+        state.mobileX = document.querySelector('.mobile-header .x')
+        
+        console.log('state.mobileX',state.mobileX);
+        
         state.mobileX?.addEventListener('click',() => {
             if ( app.querySelector('.products') ) return showCartTickets();
             if ( app.lastApp?.classList.contains('contents') ) { app.lastApp = document.createElement('div'); return showContent() }

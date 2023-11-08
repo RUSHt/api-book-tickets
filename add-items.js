@@ -139,16 +139,14 @@ document.addEventListener('DOMContentLoaded',() => {
     state.mobile = app.getBoundingClientRect().width < 650;
 
     if ( state.mobile ) {
-        app.className = 'mobile';
+        app.className = 'container mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')
         state.cartSVG = document.querySelector('.mobile-header .cart')
         state.mobileX = document.querySelector('.mobile-header .x')
-        console.log('document.body',document.body);
-        document.querySelector('.container').removeChild(document.querySelector('#products'));
+        app.innerHTML = '<div id="tickets"></div>'
 
         state.mobileX?.addEventListener('click',() => {
             console.log('state.mobileX click');
-            console.log('app',app);
             if ( app.querySelector('.products') ) return showCartTickets();
         });
 

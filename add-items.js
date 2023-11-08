@@ -61,12 +61,12 @@ const addItem = item => {
         item.qty = 1;
         ticket.addingItems.push({ ...item });
     }
-    ticket.itemRevenue = ticket.addingItems.reduce((p,item) => { 
+    ticket.addItemRevenue = ticket.addingItems.reduce((p,item) => { 
         item.linePrice = item.qty * item.price 
         return p += item.linePrice
     },0);
     
-    console.log('addItem ticket.itemRevenue',ticket.itemRevenue)
+    console.log('addItem ticket.addItemRevenue',ticket.addItemRevenue)
 
     makeTicketsHTML(state.tickets)
 }
@@ -75,7 +75,7 @@ const makeTicketsHTML = tickets => {
     if ( !document.querySelector('#tickets') ) return;    
     document.querySelector('#tickets').innerHTML = tickets.map(ticket => {
         
-        ticket.price = ticket.seatRevenue + ticket.itemRevenue - ticket.initalPrice;
+        ticket.price = ticket.addItemRevenue;
         console.log('makeTicketsHTML',JSON.parse(JSON.stringify({ ticket })));
         return `
         <div class="ticket" style="border:1px solid #c0c0c0;padding:10px;margin:10px 0px;font-size:14px;position:relative">
@@ -125,7 +125,7 @@ const makeTicketsHTML = tickets => {
         
         document.querySelector('#payment-complete').addEventListener('click',async () => {
             const ticket = state.ticket;
-            const { success, error } = await addItemsToTicket({ accountId: ticket.accountId, ticketId: ticket.id, price: ticket.price, items: ticket.addingItems });
+            const { success, error } = await addItemsToTicket({ accountId: ticket.accountId, ticketId: ticket.id, price: ticket.addItemRevenue, items: ticket.addingItems });
             success ? displayTickets([ state.ticket ]) : console.log({ success, error })
         })
     }
@@ -176,9 +176,8 @@ document.addEventListener('DOMContentLoaded',async () => {
     const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
     console.log({ success, ticket, error });
     ticket.url = state.ticket.url;
-    ticket.initalPrice = ticket.itemRevenue + ticket.seatRevenue;
-    ticket.itemRevenue = 0;
     ticket.addingItems = [];
+    ticket.addItemRevenue = 0;
     state.ticket = ticket;
     state.tickets = [ ticket ];
     showCartTickets();

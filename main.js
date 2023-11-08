@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded',() => {
             if ( app.querySelector('.products') ) return showCartTickets();
             if ( app.lastApp?.classList.contains('contents') ) { app.lastApp = document.createElement('div'); return showContent() }
             if ( app.lastApp?.hasAttribute('content') ) { app.lastApp = document.createElement('div'); return showEvents(state.currentContent); };
-            if ( app.lastApp?.hasAttribute('event') ) { const eventId = app.lastApp.getAttribute('event'); app.lastApp = document.createElement('div'); return showEvent(state.events.find(event => event.id == eventId)); } 
+            if ( app.lastApp?.hasAttribute('event') ) { app.lastApp = document.createElement('div'); return showEvent(state.currentEvent,state.currentContent); } 
             if ( document.querySelector('.events') ) return showContent()
             if ( document.querySelector('book-event') ) return showEvents(state.currentContent);
         });

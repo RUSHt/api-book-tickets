@@ -91,7 +91,7 @@ const makeTicketsHTML = tickets => {
             }
             ${
                 ticket.addingItems.length > 0 ? `<div style="margin-top:10px;border-top:1px solid #c0c0c0;padding-top:10px"><p style="text-align:center;font-weight:bold;margin-bottom:0px;text-decoration:underline">Adding Items</p>${
-                    ticket.items.map(item => `<div style="display:grid;grid-template-columns:20px 1fr 50px 60px"><span>${item.qty}</span><span>${item.title}</span><span>$${item.price.toFixed(2)}</span><span style="text-align:right">$${item.linePrice.toFixed(2)}</span></div>`).join('')
+                    ticket.addingItems.map(item => `<div style="display:grid;grid-template-columns:20px 1fr 50px 60px"><span>${item.qty}</span><span>${item.title}</span><span>$${item.price.toFixed(2)}</span><span style="text-align:right">$${item.linePrice.toFixed(2)}</span></div>`).join('')
                 }</div>` : ''
             }
             <div style="margin-top:10px">

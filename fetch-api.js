@@ -74,14 +74,14 @@ export const getTicket = async ({ accountId, ticketId }) => {
        return result.json()
 }
 
-export const addItemsToTicket = async () => {
+export const addItemsToTicket = async ( ticket ) => {
 
     const body = {
         paymentId: '<payment-reference>',
         accountId: ticket.accountId,
         ticketId: ticket.ticketId,
         items: cart.items.map(item => ({ _id: item._id, title: item.title, qty: item.qty, price: item.price, linePrice: item.linePrice })),
-        price: cart.price
+        price: cart.priceadd
     }
 
     const result = await fetch(apiHost+'/add-to-ticket',{

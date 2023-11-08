@@ -120,15 +120,25 @@ const makeTicketsHTML = tickets => {
         document.querySelector('#email').addEventListener('change',e => localStorage.setItem('email',state.email = e.target.value))
         
         document.querySelector('#payment-complete').addEventListener('click',async () => {
-            const { success, error, contact, tickets } = await addItemsToTicket(state.tickets[0]);
-            console.log({ success, error, contact, tickets });
-            showContent();
-            displayTickets(tickets)
+            const { success, error } = await addItemsToTicket(state.tickets[0]);
+            success ? displayTickets([ state.ticket ]) : console.log({ success, error })
         })
     }
 
     document.querySelectorAll('.add').forEach((btn,i) => btn.addEventListener('click',() => addItems(tickets[i])));
     
+}
+
+const displayTickets = tickets => {
+    
+    document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0;background-color:white"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items btn">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));
+            
+    document.querySelectorAll('.add-items').forEach((btn,i) => {
+        btn.addEventListener('click',() => location.href = 'http://'+location.host+`/add-items.html?account=${accountId}&ticket=${tickets[i].ticketId}&date=${Date.now()}`)
+    })
+
+    document.body.querySelector('#final-tickets').addEventListener('click',e => document.body.removeChild(document.querySelector('#final-tickets')));
+
 }
 
 document.addEventListener('DOMContentLoaded',async () => {
@@ -157,10 +167,10 @@ document.addEventListener('DOMContentLoaded',async () => {
     }
 
     app.classList.add('add-items')
-    
+
     const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
-        console.log({ ticket, error, success });
-        ticket.addingItems = [];
-        state.tickets = [ ticket ];
-        showCartTickets();
+    console.log({ ticket, error, success });
+    ticket.addingItems = [];
+    state.tickets = [ ticket ];
+    showCartTickets();
 })

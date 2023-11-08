@@ -131,8 +131,8 @@ const makeTicketsHTML = tickets => {
     
 }
 
-document.addEventListener('DOMContentLoaded',() => {
-    console.log('DOMContentLoaded')
+document.addEventListener('DOMContentLoaded',async () => {
+
     const app = document.querySelector('#app')
 
     state.app = app;
@@ -156,11 +156,11 @@ document.addEventListener('DOMContentLoaded',() => {
         });
     }
 
-    getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId }).then(({ success, ticket }) => {
-        console.log({ ticket });
+    app.classList.add('add-items')
+    
+    const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
+        console.log({ ticket, error, success });
         ticket.addingItems = [];
         state.tickets = [ ticket ];
         showCartTickets();
-
-    })
 })

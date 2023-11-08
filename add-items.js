@@ -132,19 +132,19 @@ const makeTicketsHTML = tickets => {
 }
 
 document.addEventListener('DOMContentLoaded',() => {
-
+    console.log('DOMContentLoaded')
     const app = document.querySelector('#app')
 
     state.app = app;
     state.mobile = app.getBoundingClientRect().width < 650;
-    
+
     if ( state.mobile ) {
         app.className = 'mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')
         state.cartSVG = document.querySelector('.mobile-header .cart')
         state.mobileX = document.querySelector('.mobile-header .x')
         console.log('document.body',document.body);
-        document.querySelector('.container').removeChild(document.querySelector('#tickets'));
+        document.querySelector('.container').removeChild(document.querySelector('#products'));
 
         state.mobileX?.addEventListener('click',() => {
             console.log('state.mobileX click');

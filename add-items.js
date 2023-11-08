@@ -1,4 +1,4 @@
-import { products } from "./products-accountId-startDate.js"
+import { products, accountId } from "./products-accountId-startDate.js"
 import { getTicket, addItemsToTicket } from "./fetch-api.js";
 import { state } from "./state.js";
 
@@ -9,6 +9,8 @@ state.ticket = {
     accountId: request.account,
     ticketId: request.ticket
 }
+
+const addBack = (cB) => app.appendChild(Object.assign(document.createElement('div'),{ className: 'x' })).addEventListener('click',cB);
 
 const showCartTickets = () => {
     if ( state.mobile ) {

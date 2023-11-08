@@ -1,6 +1,9 @@
 import { products } from "./products-accountId-startDate.js"
+import { getTicket } from "./fetch-api.js";
 
 const request = location.search.split('?').pop().split('&').reduce((p,search) => { const kv = search.split('='); p[kv[0]] = kv[1]; return p },{})
+
+console.log({ request })
 
 const state = {
     app: null,
@@ -15,8 +18,17 @@ const state = {
     currentEvent: null,
     cartMessage: null,
     cartSticker: null,
-    cartSVG: null
+    cartSVG: null,
+    lastApp: null,
+    tickets: [],
 }
+
+console.log({ state })
+
+getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId }).then(({ success, ticket }) => {
+    console.log({ ticket });
+    state.tickets = [ ticket ];
+})
 
 const showCartTickets = () => {
     

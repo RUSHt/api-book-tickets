@@ -71,7 +71,7 @@ export const getTicket = async ({ accountId, ticketId }) => {
         body: JSON.stringify(body)
        });
        if ( !result.ok ) return { error: result }
-       return result.json()
+       return await result.json()
 }
 
 export const addItemsToTicket = async ( ticket ) => {
@@ -81,7 +81,7 @@ export const addItemsToTicket = async ( ticket ) => {
         accountId: ticket.accountId,
         ticketId: ticket.ticketId,
         items: cart.items.map(item => ({ _id: item._id, title: item.title, qty: item.qty, price: item.price, linePrice: item.linePrice })),
-        price: cart.priceadd
+        price: cart.price
     }
 
     const result = await fetch(apiHost+'/add-to-ticket',{
@@ -89,7 +89,7 @@ export const addItemsToTicket = async ( ticket ) => {
         body: JSON.stringify(body)
        });
        if ( !result.ok ) return { error: result }
-       return result.json();
+       return await result.json();
 
 }
 

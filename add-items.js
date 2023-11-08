@@ -168,8 +168,8 @@ document.addEventListener('DOMContentLoaded',async () => {
 
     app.classList.add('add-items')
 
-    const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
-    console.log({ ticket, error, success });
+    const response = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
+    return console.log({ response });
     ticket.addingItems = [];
     state.tickets = [ ticket ];
     showCartTickets();

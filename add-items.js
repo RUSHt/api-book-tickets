@@ -1,5 +1,5 @@
 import { products } from "./products-accountId-startDate.js"
-import { getTicket } from "./fetch-api.js";
+import { getTicket, addItemsToTicket } from "./fetch-api.js";
 import { state } from "./state.js";
 
 const request = location.search.split('?').pop().split('&').reduce((p,search) => { const kv = search.split('='); p[kv[0]] = kv[1]; return p },{})
@@ -10,24 +10,131 @@ state.ticket = {
     ticketId: request.ticket
 }
 
-console.log({ state })
-
 getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId }).then(({ success, ticket }) => {
     console.log({ ticket });
+    ticket.addingItems = [];
     state.tickets = [ ticket ];
 })
 
 const showCartTickets = () => {
+    if ( state.mobile ) {
+        state.mobileX.style.opacity = 1;
+        app.innerHTML = `<div id="tickets"></div>`
+    }
+    makeTicketsHTML(state.tickets)
+}
+
+const addItems = ticket => {
     
-    state.mobileX.style.opacity = 1;
-    
-    if ( state.tickets.length == 0 ) {
-        app.innerHTML = `<div><p style="text-align:center;margin:10px">Your basket is empty</p><p class="btn" style="margin:10px;width:calc(100% - 20px)">show me What's on</p></div>`
-        return app.querySelector('.btn').addEventListener('click',showContent)
+    products.forEach(item => item.qty = 0);
+
+    const updateItems = () => {
+        
+
+        app.innerHTML =  `<div><p class="title"><span><span><strong>Adding to ticket:- </strong>${ticket.event.title}</span><span>${ticket.event.dateTime}</span></p><div class="products">${products.map(p => `<p class="product" id="${p._id}">${p.title}${p.qty > 0 ? `<span class="product-sticker">${p.qty}<span>` : ''}</p>`).join('')}</div></div>`;
+        
+        if ( !state.mobile ) {
+            app.innerHTML += '<p class="btn">complete add items</p>'
+            addBack(showContent)
+        } else {
+            app.innerHTML += '<p class="btn">add to ticket</p>'
+        }
+
+        app.querySelectorAll('.product').forEach((btn,i) => {
+            btn.addEventListener('click',() => {
+                addItem(products[i]);
+                updateItems();
+            })
+        })
+
+        app.querySelector('.btn').addEventListener('click',() => {
+            state.mobile ? showCartTickets() : showContent();
+        })
     }
 
-    app.innerHTML = `<div id="tickets"></div>`
-    makeTicketsHTML([ state.ticket ])
+    updateItems();
+
+}
+
+const addItem = item => {
+    if ( !item ) return;
+    const ticket = state.tickets[0];
+    const current = ticket.addingItems.find(i => i._id == item._id);
+    if ( current ) {
+        current.qty += 1
+        item.qty = current.qty;
+    } else {
+        item.qty = 1;
+        ticket.addingItems.push({ ...item });
+    }
+    ticket.itemRevenue = ticket.items.reduce((p,item) => { 
+        item.linePrice = item.qty * item.price 
+        return p += item.linePrice
+    },0);
+    makeTicketsHTML(state.tickets)
+}
+
+const makeTicketsHTML = tickets => {
+    if ( !document.querySelector('#tickets') ) return;    
+    document.querySelector('#tickets').innerHTML = tickets.map(ticket => {
+        
+        ticket.price = ticket.seatRevenue + ticket.itemRevenue;
+
+        return `
+        <div class="ticket" style="border:1px solid #c0c0c0;padding:10px;margin:10px 0px;font-size:14px;position:relative">
+            <div style="text-align:center;position:relative">
+                <p>${ticket.event.title}</p>
+                <p>${ticket.event.dateTime}</p>
+            </div>
+            <div style="opacity:0.5">
+                ${ticket.seats.map(seat => `<div style="display:grid;grid-template-columns:20px 50px 1fr 1fr 60px"><span>${seat.qty}</span><span>${seat.id}</span><span>${seat.areaTitle}</span><span>${seat.title}</span><span style="text-align:right">$${seat.linePrice.toFixed(2)}</span></div>`).join('')}
+            </div>
+            ${
+            ticket.items.length > 0 ? `<div style="margin-top:10px;border-top:1px solid #c0c0c0;padding-top:10px;opacity:0.5"><p>Current Items</p>${
+                ticket.items.map(item => `<div style="display:grid;grid-template-columns:20px 1fr 50px 60px"><span>${item.qty}</span><span>${item.title}</span><span>$${item.price.toFixed(2)}</span><span style="text-align:right">$${item.linePrice.toFixed(2)}</span></div>`).join('')
+            }</div>` : ''
+            }
+            ${
+                ticket.addingItems.length > 0 ? `<div style="margin-top:10px;border-top:1px solid #c0c0c0;padding-top:10px"><p>Adding Items</p>${
+                    ticket.items.map(item => `<div style="display:grid;grid-template-columns:20px 1fr 50px 60px"><span>${item.qty}</span><span>${item.title}</span><span>$${item.price.toFixed(2)}</span><span style="text-align:right">$${item.linePrice.toFixed(2)}</span></div>`).join('')
+                }</div>` : ''
+            }
+            <div style="margin-top:10px">
+            <div style="display:grid;grid-template-columns:1fr 90px 60px"><div></div><div>Total</div><div style="text-align:right">$${ticket.price.toFixed(2)}</div></div>
+            </div>
+            <div style="text-align:center;line-height:2;margin-top:20px;">
+                ${['add items'].map(field => `<p class="${field.split(' ')[0]}"" style="background-color:#32a89b;color:white;margin:0px;width:calc(100% - 10px)">${field}</p>`).join('')}
+            </div>
+        </div>`
+    }).join('')
+
+    if ( state.ticket.addingItems.length > 0 ) {
+        document.querySelector('#tickets').innerHTML += `
+        <div style="border:1px solid #c0c0c0;margin-top:20px;font-size:14px">
+        <div style="margin:10px 0px 5px 40px">
+            <p style="margin:0px;font-size:12px">Name</p>
+            <input id="name" style="width:calc(100% - 40px);padding:2px" value="${state.name}"/>
+        </div>  
+        <div style="margin:10px 0px 5px 40px">
+            <p style="margin:0px;font-size:12px">Email</p>
+            <input id="email" style="width:calc(100% - 40px);padding:2px" value="${state.email}" />
+        </div> 
+        <p id="payment-complete" style="background-color:#32a89b;color:white;margin:20px;line-height:2;text-align:center">payment complete</p>
+        </div>`;
+
+        document.querySelector('#name').addEventListener('change',e => localStorage.setItem('name',state.name = e.target.value))
+        document.querySelector('#email').addEventListener('change',e => localStorage.setItem('email',state.email = e.target.value))
+        
+        document.querySelector('#payment-complete').addEventListener('click',async () => {
+            const { success, error, contact, tickets } = await addItemsToTicket(state.tickets[0]);
+            console.log({ success, error, contact, tickets });
+            showContent();
+            displayTickets(tickets)
+        })
+    }
+
+    document.querySelectorAll('.add').forEach((btn,i) => btn.addEventListener('click',() => addItems(tickets[i])));
+    
 }
 
 document.addEventListener('DOMContentLoaded',() => {
@@ -58,4 +165,11 @@ document.addEventListener('DOMContentLoaded',() => {
             showCartTickets();
         });
     }
+
+    getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId }).then(({ success, ticket }) => {
+        console.log({ ticket });
+        ticket.addingItems = [];
+        state.tickets = [ ticket ];
+
+    })
 })

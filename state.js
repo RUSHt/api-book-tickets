@@ -13,3 +13,8 @@ export const state = {
     cartSticker: null,
     cartSVG: null
 }
+
+try {
+    state.name = localStorage.getItem('name') || ''
+    state.email = localStorage.getItem('email') || ''
+} catch(e) {};

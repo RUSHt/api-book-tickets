@@ -61,7 +61,7 @@ const addItem = item => {
         item.qty = 1;
         ticket.addingItems.push({ ...item });
     }
-    ticket.itemRevenue = ticket.items.reduce((p,item) => { 
+    ticket.itemRevenue = ticket.addingItems.reduce((p,item) => { 
         item.linePrice = item.qty * item.price 
         return p += item.linePrice
     },0);

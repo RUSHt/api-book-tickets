@@ -31,7 +31,6 @@ const addItems = ticket => {
         
         if ( !state.mobile ) {
             app.innerHTML += '<p class="btn">complete add items</p>'
-            addBack(showContent)
         } else {
             app.innerHTML += '<p class="btn">add to ticket</p>'
         }

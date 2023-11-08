@@ -67,8 +67,6 @@ const addItem = item => {
         item.linePrice = item.qty * item.price 
         return p += item.linePrice
     },0);
-    
-    console.log('addItem ticket.addItemRevenue',ticket.addItemRevenue)
 
     makeTicketsHTML(state.tickets)
 }
@@ -78,7 +76,7 @@ const makeTicketsHTML = tickets => {
     document.querySelector('#tickets').innerHTML = tickets.map(ticket => {
         
         ticket.price = ticket.addItemRevenue;
-        console.log('makeTicketsHTML',JSON.parse(JSON.stringify({ ticket })));
+
         return `
         <div class="ticket" style="border:1px solid #c0c0c0;padding:10px;margin:10px 0px;font-size:14px;position:relative">
             <div style="text-align:center;position:relative">
@@ -137,13 +135,10 @@ const makeTicketsHTML = tickets => {
 }
 
 const displayTickets = tickets => {
-    console.log({ tickets });
+
     document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0;background-color:white"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items btn">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));
             
     document.querySelectorAll('.add-items').forEach((btn,i) => {
-        
-        console.log('ticket[i]',i,tickets[i])
-
         btn.addEventListener('click',() => location.href = 'http://'+location.host+`/r-book-tickets/add-items.html?account=${accountId}&ticket=${tickets[i].id}&date=${Date.now()}`)
     })
 

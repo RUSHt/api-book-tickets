@@ -1,5 +1,6 @@
 import { getContent, getEvents, getSessionTickets, completeTicketsPurchase } from "./fetch-api.js"
 import { products, accountId, startDate } from "./products-accountId-startDate.js"
+import { state } from "./state.js";
 
 const displayTickets = tickets => {
     
@@ -10,23 +11,6 @@ const displayTickets = tickets => {
     })
 
     document.body.querySelector('#final-tickets').addEventListener('click',e => document.body.removeChild(document.querySelector('#final-tickets')));
-
-}
-
-export const state = {
-    mobile: null,
-    app: null,
-    mobileX: null,
-    content: [],
-    events: [],
-    event: null,
-    name: '',
-    email: '',
-    currentContent: null,
-    currentEvent: null,
-    cartMessage: null,
-    cartSticker: null,
-    cartSVG: null
 
 }
 

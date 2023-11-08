@@ -1,26 +1,13 @@
 import { products } from "./products-accountId-startDate.js"
 import { getTicket } from "./fetch-api.js";
+import { state } from "./state";
 
 const request = location.search.split('?').pop().split('&').reduce((p,search) => { const kv = search.split('='); p[kv[0]] = kv[1]; return p },{})
 
-console.log({ request })
-
-const state = {
-    app: null,
-    name: '',
-    email: '',
-    ticket: {
-        url: `https://tkt.ticketus.net/new-ticket/${request.account}/${request.ticket}`,
-        accountId: request.account,
-        ticketId: request.ticket
-    },
-    currentContent: null,
-    currentEvent: null,
-    cartMessage: null,
-    cartSticker: null,
-    cartSVG: null,
-    lastApp: null,
-    tickets: [],
+state.ticket = {
+    url: `https://tkt.ticketus.net/new-ticket/${request.account}/${request.ticket}`,
+    accountId: request.account,
+    ticketId: request.ticket
 }
 
 console.log({ state })

@@ -141,6 +141,9 @@ const displayTickets = tickets => {
     document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0;background-color:white"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items btn">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));
             
     document.querySelectorAll('.add-items').forEach((btn,i) => {
+        
+        console.log('ticket[i]',i,tickets[i])
+
         btn.addEventListener('click',() => location.href = 'http://'+location.host+`/r-book-tickets/add-items.html?account=${accountId}&ticket=${tickets[i].id}&date=${Date.now()}`)
     })
 
@@ -172,8 +175,6 @@ document.addEventListener('DOMContentLoaded',async () => {
             showCartTickets();
         });
     }
-
-    app.classList.add('add-items')
 
     const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
     console.log({ success, ticket, error });

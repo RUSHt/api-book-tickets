@@ -62,10 +62,12 @@ export const completeTicketsPurchase = async tickets => {
 }
 
 export const getTicket = async ({ accountId, ticketId }) => {
+
     const body = { 
         accountId,
         ticketId
     }
+    
     const result = await fetch(apiHost+'/get-ticket',{
         method: 'POST',
         body: JSON.stringify(body)

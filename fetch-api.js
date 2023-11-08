@@ -1,6 +1,7 @@
-
-import { apiHost, accountId } from './products-accountId-startDate.js'
 import { state } from './main.js'
+import { accountId } from './products-accountId-startDate.js'
+
+const apiHost = "https://api.ticketus.net" 
 
 export const getContent = async (options = {}) => {
     const response = await fetch(apiHost+'/get-content?accountId='+accountId+(options.startDate ? ('&startDate='+options.startDate) : ''))

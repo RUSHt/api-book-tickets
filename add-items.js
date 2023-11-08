@@ -69,6 +69,12 @@ const addItem = item => {
     },0);
 
     makeTicketsHTML(state.tickets)
+
+    if ( state.cartSticker ) {
+        const qty = ticket.addingItems.reduce((p,item) => p += item.qty,0)
+        state.cartSticker.style.display = qty > 0 ? 'block' : 'none';
+        state.cartSticker.querySelector('text').textContent = qty;
+    }
 }
 
 const makeTicketsHTML = tickets => {
@@ -161,12 +167,10 @@ document.addEventListener('DOMContentLoaded',async () => {
         app.innerHTML = '<div id="tickets"></div>'
 
         state.mobileX?.addEventListener('click',() => {
-            console.log('state.mobileX click');
             if ( app.querySelector('.products') ) return showCartTickets();
         });
 
         state.cartSVG?.addEventListener('click',e => {
-            app.lastApp = app.firstChild.cloneNode();
             showCartTickets();
         });
     }

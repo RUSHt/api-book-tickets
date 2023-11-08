@@ -27,10 +27,11 @@ const addItems = ticket => {
     const updateItems = () => {
         
 
-        app.innerHTML =  `<div><p class="title"><span><span><strong>Adding to ticket:- </strong>${ticket.event.title}</span><span>${ticket.event.dateTime}</span></p><div class="products">${products.map(p => `<p class="product" id="${p._id}">${p.title}${p.qty > 0 ? `<span class="product-sticker">${p.qty}<span>` : ''}</p>`).join('')}</div></div>`;
+        app.innerHTML =  `<div class="d-box"><p class="title"><span><span><strong>Adding to ticket:- </strong>${ticket.event.title}</span><span>${ticket.event.dateTime}</span></p><div class="products">${products.map(p => `<p class="product" id="${p._id}">${p.title}${p.qty > 0 ? `<span class="product-sticker">${p.qty}<span>` : ''}</p>`).join('')}</div></div><div id="tickets"></div>`;
         
         if ( !state.mobile ) {
-            app.innerHTML += '<p class="btn">complete add items</p>'
+            app.querySelector('.d-box').innerHTML += '<p class="btn">complete add items</p>'
+            showCartTickets();
         } else {
             app.innerHTML += '<p class="btn">add to ticket</p>'
         }
@@ -43,7 +44,7 @@ const addItems = ticket => {
         })
 
         app.querySelector('.btn').addEventListener('click',() => {
-            state.mobile ? showCartTickets() : showContent();
+            state.mobile && showCartTickets();
         })
     }
 

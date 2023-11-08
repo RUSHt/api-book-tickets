@@ -52,7 +52,7 @@ const addItems = ticket => {
 
 const addItem = item => {
     if ( !item ) return;
-    const ticket = state.tickets[0];
+    const ticket = state.ticket;
     const current = ticket.addingItems.find(i => i._id == item._id);
     if ( current ) {
         current.qty += 1
@@ -65,6 +65,9 @@ const addItem = item => {
         item.linePrice = item.qty * item.price 
         return p += item.linePrice
     },0);
+    
+    console.log('addItem ticket.itemRevenue',ticket.itemRevenue)
+
     makeTicketsHTML(state.tickets)
 }
 
@@ -73,7 +76,7 @@ const makeTicketsHTML = tickets => {
     document.querySelector('#tickets').innerHTML = tickets.map(ticket => {
         
         ticket.price = ticket.seatRevenue + ticket.itemRevenue - ticket.initalPrice;
-
+        console.log('makeTicketsHTML',JSON.parse(JSON.stringify({ ticket })));
         return `
         <div class="ticket" style="border:1px solid #c0c0c0;padding:10px;margin:10px 0px;font-size:14px;position:relative">
             <div style="text-align:center;position:relative">
@@ -174,6 +177,7 @@ document.addEventListener('DOMContentLoaded',async () => {
     console.log({ success, ticket, error });
     ticket.url = state.ticket.url;
     ticket.initalPrice = ticket.itemRevenue + ticket.seatRevenue;
+    ticket.itemRevenue = 0;
     ticket.addingItems = [];
     state.ticket = ticket;
     state.tickets = [ ticket ];

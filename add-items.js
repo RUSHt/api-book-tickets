@@ -10,12 +10,6 @@ state.ticket = {
     ticketId: request.ticket
 }
 
-getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId }).then(({ success, ticket }) => {
-    console.log({ ticket });
-    ticket.addingItems = [];
-    state.tickets = [ ticket ];
-})
-
 const showCartTickets = () => {
     if ( state.mobile ) {
         state.mobileX.style.opacity = 1;
@@ -143,21 +137,19 @@ document.addEventListener('DOMContentLoaded',() => {
 
     state.app = app;
     state.mobile = app.getBoundingClientRect().width < 650;
-
+    
     if ( state.mobile ) {
         app.className = 'mobile';
         state.cartSticker = document.querySelector('.mobile-header #sticker')
         state.cartSVG = document.querySelector('.mobile-header .cart')
         state.mobileX = document.querySelector('.mobile-header .x')
+        console.log('document.body',document.body);
         document.querySelector('.container').removeChild(document.querySelector('#tickets'));
 
         state.mobileX?.addEventListener('click',() => {
+            console.log('state.mobileX click');
+            console.log('app',app);
             if ( app.querySelector('.products') ) return showCartTickets();
-            if ( app.lastApp?.classList.contains('contents') ) { app.lastApp = document.createElement('div'); return showContent() }
-            if ( app.lastApp?.hasAttribute('content') ) { app.lastApp = document.createElement('div'); return showEvents(state.currentContent); };
-            if ( app.lastApp?.hasAttribute('event') ) { const eventId = app.lastApp.getAttribute('event'); app.lastApp = document.createElement('div'); return showEvent(state.events.find(event => event.id == eventId)); } 
-            if ( document.querySelector('.events') ) return showContent()
-            if ( document.querySelector('book-event') ) return showEvents(state.currentContent);
         });
 
         state.cartSVG?.addEventListener('click',e => {
@@ -170,6 +162,7 @@ document.addEventListener('DOMContentLoaded',() => {
         console.log({ ticket });
         ticket.addingItems = [];
         state.tickets = [ ticket ];
+        showCartTickets();
 
     })
 })

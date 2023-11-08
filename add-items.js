@@ -1,6 +1,6 @@
 import { products } from "./products-accountId-startDate.js"
 import { getTicket } from "./fetch-api.js";
-import { state } from "./state";
+import { state } from "./state.js";
 
 const request = location.search.split('?').pop().split('&').reduce((p,search) => { const kv = search.split('='); p[kv[0]] = kv[1]; return p },{})
 

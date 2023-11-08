@@ -170,8 +170,10 @@ document.addEventListener('DOMContentLoaded',async () => {
 
     const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
     console.log({ success, ticket, error });
+    ticket.url = state.ticket.url;
     ticket.initalPrice = ticket.itemRevenue + ticket.seatRevenue;
     ticket.addingItems = [];
+    state.ticket = ticket;
     state.tickets = [ ticket ];
     showCartTickets();
 })

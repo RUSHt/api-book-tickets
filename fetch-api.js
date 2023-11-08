@@ -1,6 +1,6 @@
 
-const apiHost = "https://api.ticketus.net" 
-const accountId = '02sxk0vxanh'
+import { apiHost, accountId } from './products-accountId-startDate.js'
+import { state } from './main.js'
 
 export const getContent = async (options = {}) => {
     const response = await fetch(apiHost+'/get-content?accountId='+accountId+(options.startDate ? ('&startDate='+options.startDate) : ''))
@@ -57,6 +57,39 @@ export const completeTicketsPurchase = async tickets => {
     });
     if ( !result.ok ) return { error: result }
     return await result.json();
+
+}
+
+export const getTicket = async ({ accountId, ticketId }) => {
+    const body = { 
+        accountId,
+        ticketId
+    }
+    const result = await fetch(apiHost+'/get-ticket',{
+        method: 'POST',
+        body: JSON.stringify(body)
+       });
+       if ( !result.ok ) return { error: result }
+       return result.json()
+}
+
+export const addItemsToTicket = async () => {
+
+    const body = {
+        paymentId: '<payment-reference>',
+        accountId: ticket.accountId,
+        ticketId: ticket.ticketId,
+        items: cart.items.map(item => ({ _id: item._id, title: item.title, qty: item.qty, price: item.price, linePrice: item.linePrice })),
+        price: cart.price
+    }
+
+    const result = await fetch(apiHost+'/add-to-ticket',{
+        method: 'POST',
+        body: JSON.stringify(body)
+       });
+       if ( !result.ok ) return { error: result }
+       return result.json();
+
 }
 
 

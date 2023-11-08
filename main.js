@@ -1,8 +1,5 @@
 import { getContent, getEvents, getSessionTickets, completeTicketsPurchase } from "./fetch-api.js"
-
-const products  = [ { _id: 'a', title: "Curly Fries", price: 3.75 }, { _id: 'b', title: "Meat Platter", price: 9.75 }, { _id: 'c', title: "Salted Popcorn", price: 3.95 }, { _id: 'd', title: "Chocolate Buttons", price: 3.5 } ]
-const accountId = '02sxk0vxanh'
-const startDate = '2023/06/01'
+import { products, accountId, startDate } from "./products-accountId-startDate.js"
 
 const displayTickets = tickets => {
     
@@ -16,12 +13,21 @@ const displayTickets = tickets => {
 
 }
 
-const state = {
+export const state = {
+    mobile: null,
+    app: null,
+    mobileX: null,
     content: [],
     events: [],
     event: null,
     name: '',
-    email: ''
+    email: '',
+    currentContent: null,
+    currentEvent: null,
+    cartMessage: null,
+    cartSticker: null,
+    cartSVG: null
+
 }
 
 setTimeout(async () => {
@@ -37,7 +43,7 @@ try {
     state.email = localStorage.getItem('email') || ''
 } catch(e) {};
 
-const addX = (cB) => app.appendChild(Object.assign(document.createElement('div'),{ className: 'x' })).addEventListener('click',cB);
+const addBack = (cB) => app.appendChild(Object.assign(document.createElement('div'),{ className: 'x' })).addEventListener('click',cB);
 
 const showContent = () => {
     
@@ -80,7 +86,7 @@ const showEvents = content => {
             showEvent(state.events.find(event => event.id == e.target.id),content)
         })
     });
-    !state.mobile && addX(showContent)     
+    !state.mobile && addBack(showContent)     
 }
 
 const showEvent = (event, content) => {
@@ -92,7 +98,7 @@ const showEvent = (event, content) => {
 
     } else {
         app.innerHTML = `<p class="title">${event.title}</span><span>${event.dateTime}</span></p><p id="cart-book-seats-state"><div class="change-area-seats"><p class="btn change-area">change area</p><p class="btn change-seats">change seats</p></div></p><book-event id="event-${event.id}" event-id="${event.id}"></book-event>`
-        addX(() => { 
+        addBack(() => { 
             app.innerHTML = `<div class="contents"></div>`
             showEvents(content) 
         })
@@ -114,7 +120,7 @@ const addItems = ticket => {
         
         if ( !state.mobile ) {
             app.innerHTML += '<p class="btn">complete add items</p>'
-            addX(showContent)
+            addBack(showContent)
         } else {
             app.innerHTML += '<p class="btn">add to ticket</p>'
         }
@@ -258,7 +264,6 @@ document.addEventListener('DOMContentLoaded',() => {
             app.lastApp = app.firstChild.cloneNode();
             showCartTickets();
         });
-
     }
 
     getContent({ startDate }).then(({ content }) => {

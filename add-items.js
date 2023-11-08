@@ -95,7 +95,7 @@ const makeTicketsHTML = tickets => {
                 }</div>` : ''
             }
             <div style="margin-top:10px">
-            <div style="display:grid;grid-template-columns:1fr 90px 60px"><div></div><div>Total</div><div style="text-align:right">$${ticket.price.toFixed(2)}</div></div>
+                <div style="display:grid;grid-template-columns:1fr 90px 60px"><div></div><div>To Pay</div><div style="text-align:right">$${ticket.price.toFixed(2)}</div></div>
             </div>
             <div style="text-align:center;line-height:2;margin-top:20px;">
                 ${['add items'].map(field => `<p class="${field.split(' ')[0]}"" style="background-color:#32a89b;color:white;margin:0px;width:calc(100% - 10px)">${field}</p>`).join('')}

@@ -72,7 +72,7 @@ const makeTicketsHTML = tickets => {
     if ( !document.querySelector('#tickets') ) return;    
     document.querySelector('#tickets').innerHTML = tickets.map(ticket => {
         
-        ticket.price = ticket.seatRevenue + ticket.itemRevenue;
+        ticket.price = ticket.seatRevenue + ticket.itemRevenue - ticket.initalPrice;
 
         return `
         <div class="ticket" style="border:1px solid #c0c0c0;padding:10px;margin:10px 0px;font-size:14px;position:relative">
@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded',async () => {
 
     const { success, ticket, error } = await getTicket({ accountId: state.ticket.accountId, ticketId: state.ticket.ticketId })
     console.log({ success, ticket, error });
+    ticket.initalPrice = ticket.itemRevenue + ticket.seatRevenue;
     ticket.addingItems = [];
     state.tickets = [ ticket ];
     showCartTickets();

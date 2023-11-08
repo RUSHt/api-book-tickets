@@ -121,7 +121,8 @@ const makeTicketsHTML = tickets => {
         document.querySelector('#email').addEventListener('change',e => localStorage.setItem('email',state.email = e.target.value))
         
         document.querySelector('#payment-complete').addEventListener('click',async () => {
-            const { success, error } = await addItemsToTicket(state.tickets[0]);
+            const ticket = state.ticket;
+            const { success, error } = await addItemsToTicket({ accountId: ticket.accountId, ticketId: ticket.id, price: ticket.price, items: ticket.addingItems });
             success ? displayTickets([ state.ticket ]) : console.log({ success, error })
         })
     }

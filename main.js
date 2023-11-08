@@ -1,6 +1,7 @@
 import { getContent, getEvents, getSessionTickets, completeTicketsPurchase } from "./fetch-api.js"
 import { products, accountId, startDate } from "./products-accountId-startDate.js"
 import { state } from "./state.js";
+
 const displayTickets = tickets => {
     
     document.body.appendChild(tickets.reduce((p,ticket) => { p.innerHTML += `<div style="border:1px solid #c0c0c0;background-color:white"><img src="${ticket.url}" style="width:300px;margin:5px"/><p class="add-items btn">add to ticket</p></div>`; return p },Object.assign(document.createElement('div'),{ style: 'width:100vw;height:100vh;position:fixed;display:flex;justify-content:space-around;left:0px;top:0px;align-items:center', id: 'final-tickets' })));

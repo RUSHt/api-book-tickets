@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded',() => {
         });
 
         bookTickets.addEventListener('release-warning',({ promptTime, eventId, release, event }) => {
-            console.log('index.js release-warning',{ promptTime, eventId, release, event });
+            console.log('main.js release-warning',{ promptTime, eventId, release, event });
             // there are two timers configured in Cinema CMS.  First is the releaseTime, ie the interval
             // at which we look for seats that have been reserved but had no action. Second in the prompTime
             // which is the milliseconds after the release-warning when the seats will be released.
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded',() => {
         });
 
         bookTickets.addEventListener('released',ticket => {
-            console.log('index.js released',{ ticket })
+            console.log('main.js released',{ ticket })
             // This event is fired when there has been no call to bookTickets.ticketAction() following
             // the release-waring within promptTime ms.
         });

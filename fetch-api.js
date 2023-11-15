@@ -40,6 +40,7 @@ export const completeTicketsPurchase = async tickets => {
         },
         paymentId: '<payment-reference>',
         accountId,
+        timeZone: Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone,
         tickets: tickets.map(ticket => ({
             sessionId: ticket.sessionId,
             event: ticket.event,
